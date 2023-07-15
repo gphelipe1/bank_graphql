@@ -32,11 +32,11 @@ namespace Bank.Repositories
             return acc;
         }
         
-        public Account Delete(Account acc) {
+        public async Task<Account> Delete(Account acc) {
             var account = _context.Accounts.FirstOrDefault(c => c.Conta == acc.Conta);
         
             _context.Accounts.Remove(account!);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return account!;
         }

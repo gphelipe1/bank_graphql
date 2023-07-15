@@ -16,6 +16,36 @@ namespace Bank.Services
             _serviceProvider = serviceProvider;
         }
 
+        public async Task<Account> Create(int accNumber) {
+            var checkAcc = _repository.GetByAccountNumber(accNumber);
+
+            if(checkAcc != null){
+                throw new Exception("Conta já existente no banco.");
+            }
+
+            var newAccount = new Account();
+
+            newAccount.Conta = accNumber;
+
+            var accountCreated = await _repository.Save(newAccount);
+
+            return accountCreated;
+        }
+
+        public async Task<Account> Delete(int accNumber) {
+            var account = _repository.GetByAccountNumber(accNumber);
+            
+            if (account == null)  
+                throw new Exception("Conta não encontrada.");
+
+            if (account.Saldo > 0)
+                throw new Exception("Ação negada. Por favor, saque o valor da conta.");
+
+            var deletedAccount = await _repository.Delete(account);
+
+            return deletedAccount;
+        }
+
         public List<Account> GetAccounts(){
             var accounts = _repository.GetAll();
 

@@ -8,7 +8,7 @@ namespace Bank.Repositories
         Account? GetByAccountNumber(int accNumber);
         Task<Account> Save(Account acc);
         Task<Account> Update(Account acc);
-        Account Delete(Account acc);
+        Task<Account> Delete(Account acc);
         Task<Account?> Deposit(int accNumber, decimal value);
     }
 }
