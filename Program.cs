@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<ApiContext, ApiContext>();
 
 var connectionString = builder.Configuration.GetConnectionString("AppDbConnectionString");
 builder.Services.AddDbContext<ApiContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)),

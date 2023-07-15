@@ -5,24 +5,29 @@ namespace Bank
 {
     public class AccountMutation
     {
-        private readonly IAccountService _service;
-        public AccountMutation(IAccountService service) {
-            _service = service;
+        public AccountMutation() {
         }
 
-        public Account Depositar(int conta, decimal valor)
+        public async Task<Account> Depositar(int conta, decimal valor, [Service] IAccountService _service)
         {
-            var deposited = _service.Deposit(conta, valor);
+            var deposited = await _service.Deposit(conta, valor);
 
             return deposited;
         }
 
-        public Account Sacar(int conta, decimal valor)
+        public async Task<Account> Sacar(int conta, decimal valor, [Service] IAccountService _service)
         {
-            var account = _service.Withdraw(conta, valor);
+            var account = await _service.Withdraw(conta, valor);
 
             return account;
         }
+
+        // public async Task<Account> CriarConta(int conta, [Service] IAccountService _service)
+        // {
+        //     var deposited = await _service.Deposit(conta, valor);
+
+        //     return deposited;
+        // }
 
     }
 }

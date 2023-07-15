@@ -6,7 +6,7 @@ namespace Bank.Services
     {
         List<Account> GetAccounts();
         decimal GetAcountBalance(int accNumber);
-        Account Withdraw(int accNumber, decimal valor);
-        Account Deposit(int accNumber, decimal value);
+        Task<Account> Withdraw(int accNumber, decimal valor);
+        Task<Account> Deposit(int accNumber, decimal value);
     }
 }

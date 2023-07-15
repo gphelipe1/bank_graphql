@@ -1,5 +1,7 @@
+using Bank.Context;
 using Bank.Model;
 using Bank.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bank.Services
 {
@@ -7,7 +9,9 @@ namespace Bank.Services
     {
         private readonly IAccountRepository _repository;
         private readonly IServiceProvider _serviceProvider;
-        public AccountService(IAccountRepository repository, IServiceProvider serviceProvider) {
+
+        public AccountService(IAccountRepository repository, IServiceProvider serviceProvider)
+        {
             _repository = repository;
             _serviceProvider = serviceProvider;
         }
@@ -18,7 +22,7 @@ namespace Bank.Services
             return accounts;
         }
 
-        public Account Withdraw(int accNumber, decimal valor)
+        public async Task<Account> Withdraw(int accNumber, decimal valor)
         {
             var conta = _repository.GetByAccountNumber(accNumber);
             
@@ -29,14 +33,14 @@ namespace Bank.Services
                 throw new Exception("Saldo insuficiente.");
 
             conta.Saldo -= valor;
-            var updated = _repository.Update(conta);
+            var updated = await _repository.Update(conta);
 
             return updated;
         }
 
-        public Account Deposit(int accNumber, decimal value)
+        public async Task<Account> Deposit(int accNumber, decimal value)
         {
-            var account = _repository.Deposit(accNumber, value);
+            var account = await _repository.Deposit(accNumber, value);
 
             if (account == null)
                 throw new Exception("Conta não encontrada.");

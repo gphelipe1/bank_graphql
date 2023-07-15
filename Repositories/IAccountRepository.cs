@@ -6,9 +6,9 @@ namespace Bank.Repositories
     {
         List<Account> GetAll();
         Account? GetByAccountNumber(int accNumber);
-        Account Save(Account acc);
-        Account Update(Account acc);
+        Task<Account> Save(Account acc);
+        Task<Account> Update(Account acc);
         Account Delete(Account acc);
-        Account? Deposit(int accNumber, decimal value);
+        Task<Account?> Deposit(int accNumber, decimal value);
     }
 }

@@ -5,19 +5,16 @@ namespace Bank
 {
     public class AccountQuery
     {
-        private readonly IAccountService _service;
-        public AccountQuery(IAccountService service) {
-            _service = service;
-        }
+        public AccountQuery() {}
 
-        public List<Account> GetAccounts()
+        public List<Account> GetAccounts([Service] IAccountService _service)
         {
             var accounts = _service.GetAccounts();
             return accounts;
             
         }
 
-        public decimal Saldo(int conta)
+        public decimal Saldo(int conta, [Service] IAccountService _service)
         {
             var value = _service.GetAcountBalance(conta);
             return value;
