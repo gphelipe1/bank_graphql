@@ -5,10 +5,10 @@ namespace Bank.Repositories
     public interface IAccountRepository
     {
         List<Account> GetAll();
-        Account GetByAccountNumber(string accNumber);
+        Account? GetByAccountNumber(int accNumber);
         Account Save(Account acc);
         Account Update(Account acc);
         Account Delete(Account acc);
-        Account? Deposit(string accNumber, decimal value);
+        Account? Deposit(int accNumber, decimal value);
     }
 }

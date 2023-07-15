@@ -17,7 +17,7 @@ namespace Bank.Repositories
         
         public Account Save(Account acc) {
             _context.Accounts.Add(acc);
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
 
             return acc;
         }
@@ -38,12 +38,13 @@ namespace Bank.Repositories
             return account!;
         }
 
-        public Account? Deposit(string accNumber, decimal value) {
+        public Account? Deposit(int accNumber, decimal value) {
             var acc = _context.Accounts.Where(c => c.Conta == accNumber).FirstOrDefault();
 
             if (acc != null) {
                 acc.Saldo += value;
                 _context.Accounts.Update(acc);
+                _context.SaveChanges();
 
                 return acc;
             }
@@ -51,10 +52,11 @@ namespace Bank.Repositories
             return null;
         }
 
-        public Account GetByAccountNumber(string accNumber) {
-        var account = _context.Accounts.FirstOrDefault(c => c.Conta == accNumber);
 
-        return account!;
-    }
+        public Account? GetByAccountNumber(int accNumber) {
+            var account = _context.Accounts.FirstOrDefault(c => c.Conta == accNumber);
+
+            return account;
+        }
     }
 }

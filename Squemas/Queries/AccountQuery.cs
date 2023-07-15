@@ -19,8 +19,8 @@ namespace Bank
 
         public decimal Saldo(int conta)
         {
-            var accNumber = conta.ToString();
-            return _service.GetAcountBalance(accNumber);
+            var value = _service.GetAcountBalance(conta);
+            return value;
         }
 
     }
