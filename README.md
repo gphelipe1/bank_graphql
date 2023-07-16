@@ -2,7 +2,7 @@
 A C# API with .NET Core that simulates some functionalities of a digital bank using GraphQL (HotChocolate).
 
 ## [Database]
-The database uses MySQL and to have access to it, just add the properly string connection on the **Backend**'s appsettings file.
+The database uses MySQL, simply add the appropriate connection string in the appsettings file..
 
 - Default Connection String:
 > "AppDbConnectionString": "server=localhost;database=LifeCare;User=root;Password=root;"
@@ -39,7 +39,7 @@ dotnet test --logger "console;verbosity=detailed"
 ```
 ## [Calling the API - Samples]
 The execution of this project cover the following samples:
-- The repo automatically creates and sample object in the database, an account with the account number 54321 and a balance of 160, but you can also create new accounts or even delete them. Accounts are created with a default balance of 0.
+- The repo automatically creates a sample object in the database, an account with the account number 54321 and a balance of 160, but you can also create new accounts or even delete them. Accounts are created with a default balance of 0.
 
 **Sample 1**
 
