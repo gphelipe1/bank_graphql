@@ -8,7 +8,7 @@ namespace Bank.Model
         public int Id { get; set; }
 
         [Required]
-        public required string Conta { get; set; }
+        public int Conta { get; set; }
         
         [Required]
         public decimal Saldo { get; set; } = 0;

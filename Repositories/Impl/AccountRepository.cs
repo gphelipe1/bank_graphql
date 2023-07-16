@@ -6,8 +6,10 @@ namespace Bank.Repositories
     public class AccountRepository: IAccountRepository
     {
         private readonly ApiContext _context;
-        public AccountRepository(ApiContext context) {
-            _context = context;
+
+        public AccountRepository(IServiceProvider serviceProvider)
+        {
+            _context = serviceProvider.GetRequiredService<ApiContext>();
         }
 
         public List<Account> GetAll() {
@@ -15,46 +17,48 @@ namespace Bank.Repositories
             return accounts;
         }
         
-        public Account Save(Account acc) {
+        public async Task<Account> Save(Account acc) {
             _context.Accounts.Add(acc);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return acc;
         }
         
-        public Account Update(Account acc) {
+        public async Task<Account> Update(Account acc) {
             _context.Accounts.Update(acc);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
 
             return acc;
         }
         
-        public Account Delete(Account acc) {
+        public async Task<Account> Delete(Account acc) {
             var account = _context.Accounts.FirstOrDefault(c => c.Conta == acc.Conta);
         
             _context.Accounts.Remove(account!);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return account!;
         }
 
-        public Account? Deposit(string accNumber, decimal value) {
-            var acc = _context.Accounts.Where(c => c.Conta == accNumber).FirstOrDefault();
+        public async Task<Account?> Deposit(int accNumber, decimal value)
+        {
+            var acc = _context.Accounts.FirstOrDefault(c => c.Conta == accNumber);
 
-            if (acc != null) {
+            if (acc != null)
+            {
                 acc.Saldo += value;
-                _context.Accounts.Update(acc);
-
+                await _context.SaveChangesAsync();
                 return acc;
             }
 
             return null;
         }
 
-        public Account GetByAccountNumber(string accNumber) {
-        var account = _context.Accounts.FirstOrDefault(c => c.Conta == accNumber);
+        public Account? GetByAccountNumber(int accNumber) {
+            var account = _context.Accounts.FirstOrDefault(c => c.Conta == accNumber);
 
-        return account!;
-    }
+            return account;
+        }
     }
 }

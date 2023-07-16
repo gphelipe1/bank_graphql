@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankFunc.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20230714200812_AccountEntity")]
-    partial class AccountEntity
+    [Migration("20230715160830_InitializingDatabase")]
+    partial class InitializingDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,8 @@ namespace BankFunc.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Conta")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Conta")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Saldo")
                         .HasColumnType("decimal(65,30)");
@@ -45,7 +44,7 @@ namespace BankFunc.Migrations
                         new
                         {
                             Id = 1,
-                            Conta = "54321",
+                            Conta = 54321,
                             Saldo = 160m
                         });
                 });
