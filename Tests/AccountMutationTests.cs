@@ -20,17 +20,24 @@ namespace Bank.Tests
         public async Task Depositar_ValidValues_ShouldReturnDepositedAccount()
         {
             // Arrange
-            var conta = 54321;
-            var valor = 100;
-            var expectedAccount = new Account { Conta = conta, Saldo = valor };
-            _accountServiceMock.Setup(s => s.Deposit(conta, valor)).ReturnsAsync(expectedAccount);
+            var account = 54321;
+            var value = 100;
+            var depositValue = 50;
+            var expectedValue = 150;
+
+            var contaMock = new Account { Conta = account, Saldo = value };
+            _accountServiceMock.Setup(s => s.Deposit(account, depositValue)).ReturnsAsync(() =>
+            {
+                contaMock.Saldo += depositValue;
+                return contaMock;
+            });
 
             // Act
-            var result = await _accountMutation.Depositar(conta, valor, _accountServiceMock.Object);
+            var result = await _accountMutation.Depositar(account, depositValue, _accountServiceMock.Object);
 
             // Assert
-            Assert.Equal(conta, result.Conta);
-            Assert.Equal(valor, result.Saldo);
+            Assert.Equal(account, result.Conta);
+            Assert.Equal(expectedValue, result.Saldo);
         }
 
         [Fact]
@@ -38,16 +45,22 @@ namespace Bank.Tests
         {
             // Arrange
             var conta = 54321;
-            var valor = 50;
-            var expectedAccount = new Account { Conta = conta, Saldo = valor };
-            _accountServiceMock.Setup(s => s.Withdraw(conta, valor)).ReturnsAsync(expectedAccount);
+            var saldoInicial = 300;
+            var valorSaque = 60;
+            var saldoEsperado = saldoInicial - valorSaque;
+            var contaMock = new Account { Conta = conta, Saldo = saldoInicial };
+           _accountServiceMock.Setup(s => s.Withdraw(conta, valorSaque)).ReturnsAsync(() =>
+            {
+                contaMock.Saldo -= valorSaque;
+                return contaMock;
+            });
 
             // Act
-            var result = await _accountMutation.Sacar(conta, valor, _accountServiceMock.Object);
+            var result = await _accountMutation.Sacar(conta, valorSaque, _accountServiceMock.Object);
 
             // Assert
             Assert.Equal(conta, result.Conta);
-            Assert.Equal(valor, result.Saldo);
+            Assert.Equal(saldoEsperado, result.Saldo);
         }
 
         [Fact]
@@ -55,7 +68,7 @@ namespace Bank.Tests
         {
             // Arrange
             var conta = 54321;
-            var expectedAccount = new Account { Conta = conta };
+            var expectedAccount = new Account { Conta = conta, Saldo = 0 };
             _accountServiceMock.Setup(s => s.Create(conta)).ReturnsAsync(expectedAccount);
 
             // Act
@@ -63,6 +76,7 @@ namespace Bank.Tests
 
             // Assert
             Assert.Equal(conta, result.Conta);
+            Assert.Equal(0, result.Saldo);
         }
 
         [Fact]
@@ -70,7 +84,7 @@ namespace Bank.Tests
         {
             // Arrange
             var conta = 54321;
-            var expectedAccount = new Account { Conta = conta };
+            var expectedAccount = new Account { Conta = conta, Saldo = 0 };
             _accountServiceMock.Setup(s => s.Delete(conta)).ReturnsAsync(expectedAccount);
 
             // Act
